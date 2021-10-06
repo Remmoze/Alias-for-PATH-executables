@@ -2,7 +2,7 @@
   "profiles": {
     "CustomRunCommands": {
       "commandName": "Project",
-      "commandLineArgs": "example \"C:\\Files\\youtube-dl.exe\""
+      "commandLineArgs": "example \"C:\\PATH\\youtube-dl.exe\""
     }
   }
 }

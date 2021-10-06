@@ -12,11 +12,28 @@ namespace CustomRunCommands
             var arguments = GetArguments(args);
             if (arguments == null) return;
 
+            if(!VerifyProgram(arguments.Item2))
+            {
+                Console.WriteLine("Unable to create a shortcut. File path is incorrect.");
+                return;
+            }
+
             var storage = new Storage();
             var shortcut = new Shortcut(arguments);
 
             shortcut.Install();
 
+        }
+
+        static public bool VerifyProgram(string path)
+        {
+            var program = Path.GetFileName(path);
+            if (Path.GetExtension(path) != ".exe") return false;
+            if (string.IsNullOrEmpty(Path.GetFileNameWithoutExtension(path))) return false;
+
+            //maybe add more checks later?
+            
+            return true;
         }
 
         static public Tuple<string, string> GetArguments(String[] args)
