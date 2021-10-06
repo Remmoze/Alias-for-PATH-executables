@@ -35,27 +35,33 @@ namespace CustomRunCommands
             }
             if (!File.Exists(StorageFilePath))
             {
-                using (FileStream fs = File.Create(StorageFilePath))
-                {
-                    var data = JsonSerializer.Serialize(Data, new()
-                    {
-                        WriteIndented = true,
-                    });
-                    var info = new UTF8Encoding(true).GetBytes(data);
-                    fs.Write(info, 0, info.Length);
-                }
-                Console.WriteLine("Generated new storage file.");
+                GenerateNewStorageFile();
+                Console.WriteLine("Generated a new storage file.");
             }
-            //LoadData();
+            else
+            {
+                LoadStorageFile();
+                Console.WriteLine("Storage file has been read.");
+            }
         }
 
-        //private void LoadData()
-        //{
-        //    var data = JObject.Parse(File.ReadAllText(StorageFilePath));
-        //    foreach (JValue shortcut in (JArray)data["shortcuts"])
-        //    {
-        //        Shortcuts.Add(new Shortcut(shortcut));
-        //    }
-        //}
+        private void GenerateNewStorageFile()
+        {
+            using (FileStream fs = File.Create(StorageFilePath))
+            {
+                Data.CreationDate = DateTime.Now;
+                var data = JsonSerializer.Serialize(Data, new()
+                {
+                    WriteIndented = true,
+                });
+                var info = new UTF8Encoding(true).GetBytes(data);
+                fs.Write(info, 0, info.Length);
+            }
+        }
+
+        private void LoadStorageFile()
+        {
+            Data = JsonSerializer.Deserialize<JsonStorage>(File.ReadAllText(StorageFilePath));
+        }
     }
 }

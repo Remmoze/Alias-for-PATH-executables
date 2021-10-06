@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CustomRunCommands": {
+      "commandName": "Project",
+      "commandLineArgs": "example \"C:\\Files\\youtube-dl.exe\""
+    }
+  }
+}
