@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Microsoft.Win32;
 
 
 namespace CustomRunCommands
@@ -11,8 +12,10 @@ namespace CustomRunCommands
             var arguments = GetArguments(args);
             if (arguments == null) return;
 
-            var (shortcut, location) = arguments;
             var storage = new Storage();
+            var shortcut = new Shortcut(arguments);
+
+            shortcut.Install();
 
         }
 

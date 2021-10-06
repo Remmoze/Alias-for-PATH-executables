@@ -45,14 +45,15 @@ namespace CustomRunCommands
             }
         }
 
-        public void AddNewShortcut(string name, string path)
+        public void AddShortcut(string name, string path)
         {
             Data.Shortcuts.Add(new JsonShortcut()
             {
                 ShortName = name,
-                Path = path
+                Path = path,
+                CreationDate = DateTime.Now
             });
-            Debug.WriteLine($"Added new storage shortcut \"{name}\" to {path}");
+            Debug.WriteLine($"Added a new storage shortcut \"{name}\" to {path}");
         }
 
         private void Save()
