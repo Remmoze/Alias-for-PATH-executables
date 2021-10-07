@@ -3,21 +3,15 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Text.Json;
+using System.Linq;
 using System.Diagnostics;
 
 namespace CustomRunCommands
 {
-    class JsonStorage
+    public class JsonStorage
     {
         public DateTime CreationDate { get; set; }
-        public List<JsonShortcut> Shortcuts { get; set; }
-    }
-
-    class JsonShortcut
-    {
-        public string ShortName { get; set; }
-        public string Path { get; set; }
-        public DateTime CreationDate { get; set; }
+        public List<Shortcut> Shortcuts { get; set; }
     }
 
     public class Storage
@@ -45,18 +39,14 @@ namespace CustomRunCommands
             }
         }
 
-        public void AddShortcut(string name, string path)
+        public void AddShortcut(Shortcut shortcut)
         {
-            Data.Shortcuts.Add(new JsonShortcut()
-            {
-                ShortName = name,
-                Path = path,
-                CreationDate = DateTime.Now
-            });
-            Debug.WriteLine($"Added a new storage shortcut \"{name}\" to {path}");
+            shortcut.CreationDate = DateTime.Now;
+            Data.Shortcuts.Add(shortcut);
+            Debug.WriteLine($"Added a new storage shortcut \"{shortcut.ShortName}\" to {shortcut.Path}");
         }
 
-        private void Save()
+        public void Save()
         {
             File.WriteAllText(StorageFilePath, SerializeJson());
             Debug.WriteLine("Storage file has been saved.");
@@ -66,6 +56,7 @@ namespace CustomRunCommands
         {
             return JsonSerializer.Serialize(Data, new()
             {
+                IgnoreReadOnlyProperties = true,
                 WriteIndented = true,
             });
         }
@@ -74,6 +65,8 @@ namespace CustomRunCommands
         {
             using (FileStream fs = File.Create(StorageFilePath))
             {
+                Data = new JsonStorage();
+                Data.Shortcuts = new List<Shortcut>();
                 Data.CreationDate = DateTime.Now;
                 var info = new UTF8Encoding(true).GetBytes(SerializeJson());
                 fs.Write(info, 0, info.Length);
@@ -83,6 +76,15 @@ namespace CustomRunCommands
         private void LoadStorageFile()
         {
             Data = JsonSerializer.Deserialize<JsonStorage>(File.ReadAllText(StorageFilePath));
+            if(Data == null)
+            {
+                GenerateNewStorageFile();
+                return;
+            }
+            if(Data.Shortcuts == null)
+            {
+                Data.Shortcuts = new List<Shortcut>();
+            }
         }
     }
 }

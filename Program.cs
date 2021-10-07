@@ -1,7 +1,5 @@
 ﻿using System;
 using System.IO;
-using Microsoft.Win32;
-
 
 namespace CustomRunCommands
 {
@@ -12,7 +10,7 @@ namespace CustomRunCommands
             var arguments = GetArguments(args);
             if (arguments == null) return;
 
-            if(!VerifyProgram(arguments.Item2))
+            if (!VerifyProgram(arguments.Item2))
             {
                 Console.WriteLine("Unable to create a shortcut. File path is incorrect.");
                 return;
@@ -21,8 +19,11 @@ namespace CustomRunCommands
             var storage = new Storage();
             var shortcut = new Shortcut(arguments);
 
-            shortcut.Install();
-
+            if (shortcut.Install())
+            {
+                storage.AddShortcut(shortcut);
+                storage.Save();
+            }
         }
 
         static public bool VerifyProgram(string path)
@@ -32,7 +33,7 @@ namespace CustomRunCommands
             if (string.IsNullOrEmpty(Path.GetFileNameWithoutExtension(path))) return false;
 
             //maybe add more checks later?
-            
+
             return true;
         }
 

@@ -11,10 +11,11 @@ using System.IO;
 
 namespace CustomRunCommands
 {
-    class Shortcut
+    public class Shortcut
     {
         public string ShortName { get; set; }
         public string Path { get; set; }
+        public DateTime CreationDate { get; set; }
 
         public string FilePath { get {
                 var dirname = System.IO.Path.GetDirectoryName(Path);
@@ -26,18 +27,25 @@ namespace CustomRunCommands
         public string FilePureName { get { return System.IO.Path.GetFileNameWithoutExtension(Path); } }
         public string ShortFilePath { get { return FilePath + ShortName + ".exe"; } }
 
+        public bool DoesAlreadyExist { get { return File.Exists(ShortFilePath); } }
         public bool IsMatchingName { get { return FilePureName == ShortName; } }
 
+        public Shortcut() { }
         public Shortcut(string name, string path)
         {
             (ShortName, Path) = (name, path);
         }
         public Shortcut(Tuple<string, string> data) : this(data.Item1, data.Item2) { }
-        public Shortcut(JsonShortcut data) : this(data.ShortName, data.Path) { }
 
-        public void Install()
+        public bool Install()
         {
             Debug.WriteLine($"Installing a new shortcut \"{ShortName}\" to {Path}");
+
+            if(DoesAlreadyExist)
+            {
+                Console.WriteLine("Can not create a shortcut: program with that name already exists.");
+                return false;
+            }
 
             if(!IsMatchingName)
             {
@@ -49,16 +57,7 @@ namespace CustomRunCommands
 
             reg.SetValue("", ShortFilePath);
             reg.SetValue("Path", FilePath);
-        }
-    }
-    class Shortcuts
-    {
-        public List<Shortcut> ShortcutsList = new List<Shortcut>();
-
-
-        public void ImportStorage(JsonStorage storage)
-        {
-            storage.Shortcuts.ForEach(shortcut => ShortcutsList.Add(new Shortcut(shortcut)));
+            return true;
         }
     }
 }
