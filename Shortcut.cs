@@ -31,10 +31,7 @@ namespace CustomRunCommands
         public bool IsMatchingName { get { return FilePureName == ShortName; } }
 
         public Shortcut() { }
-        public Shortcut(string name, string path)
-        {
-            (ShortName, Path) = (name, path);
-        }
+        public Shortcut(string name, string path) => (ShortName, Path) = (name, path);
         public Shortcut(Tuple<string, string> data) : this(data.Item1, data.Item2) { }
 
         public bool Install()
