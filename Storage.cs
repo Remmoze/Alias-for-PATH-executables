@@ -23,17 +23,14 @@ namespace CustomRunCommands
 
         public Storage()
         {
-            if (!Directory.Exists(StorageDirectoryPath))
-            {
+            if (!Directory.Exists(StorageDirectoryPath)) {
                 Directory.CreateDirectory(StorageDirectoryPath);
             }
-            if (!File.Exists(StorageFilePath))
-            {
+            if (!File.Exists(StorageFilePath)) {
                 GenerateNewStorageFile();
                 Debug.WriteLine("Generated a new storage file.");
             }
-            else
-            {
+            else {
                 LoadStorageFile();
                 Debug.WriteLine("Storage file has been read.");
             }
@@ -54,8 +51,7 @@ namespace CustomRunCommands
 
         private string SerializeJson()
         {
-            return JsonSerializer.Serialize(Data, new()
-            {
+            return JsonSerializer.Serialize(Data, new() {
                 IgnoreReadOnlyProperties = true,
                 WriteIndented = true,
             });
@@ -63,8 +59,7 @@ namespace CustomRunCommands
 
         private void GenerateNewStorageFile()
         {
-            using (FileStream fs = File.Create(StorageFilePath))
-            {
+            using (FileStream fs = File.Create(StorageFilePath)) {
                 Data = new JsonStorage();
                 Data.Shortcuts = new List<Shortcut>();
                 Data.CreationDate = DateTime.Now;
@@ -76,13 +71,11 @@ namespace CustomRunCommands
         private void LoadStorageFile()
         {
             Data = JsonSerializer.Deserialize<JsonStorage>(File.ReadAllText(StorageFilePath));
-            if(Data == null)
-            {
+            if (Data == null) {
                 GenerateNewStorageFile();
                 return;
             }
-            if(Data.Shortcuts == null)
-            {
+            if (Data.Shortcuts == null) {
                 Data.Shortcuts = new List<Shortcut>();
             }
         }

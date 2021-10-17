@@ -17,12 +17,16 @@ namespace CustomRunCommands
         public string Path { get; set; }
         public DateTime CreationDate { get; set; }
 
-        public string FilePath { get {
+        public string FilePath
+        {
+            get
+            {
                 var dirname = System.IO.Path.GetDirectoryName(Path);
                 //GetDirectoryName doesn't return '\' in the end, but if the directory is 'c:', it does
-                if (!dirname.EndsWith("\\")) dirname += "\\"; 
+                if (!dirname.EndsWith("\\")) dirname += "\\";
                 return dirname;
-            } }
+            }
+        }
         public string FileName { get { return System.IO.Path.GetFileName(Path); } }
         public string FilePureName { get { return System.IO.Path.GetFileNameWithoutExtension(Path); } }
         public string ShortFilePath { get { return FilePath + ShortName + ".exe"; } }
@@ -32,20 +36,17 @@ namespace CustomRunCommands
 
         public Shortcut() { }
         public Shortcut(string name, string path) => (ShortName, Path) = (name, path);
-        public Shortcut(Tuple<string, string> data) : this(data.Item1, data.Item2) { }
 
         public bool Install()
         {
             Debug.WriteLine($"Installing a new shortcut \"{ShortName}\" to {Path}");
 
-            if(DoesAlreadyExist)
-            {
+            if (DoesAlreadyExist) {
                 Console.WriteLine("Can not create a shortcut: program with that name already exists.");
                 return false;
             }
 
-            if(!IsMatchingName)
-            {
+            if (!IsMatchingName) {
                 File.Copy(Path, ShortFilePath);
             }
 

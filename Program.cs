@@ -12,7 +12,7 @@ namespace CustomRunCommands
             var CMDParser = new CommandParser(storage);
 
 #if DEBUG
-            while(true) { 
+            while (true) {
                 Console.Write("Gimme the args: \ncrc ");
                 args = Console.ReadLine().Split(" ");
 

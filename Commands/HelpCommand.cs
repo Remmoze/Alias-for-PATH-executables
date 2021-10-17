@@ -8,7 +8,7 @@ namespace CustomRunCommands.Commands
 {
     public class HelpCommand : Command
     {
-        public (int maxLabel, int maxArgument) OutputSpacing = (5, 10); 
+        public (int maxLabel, int maxArgument) OutputSpacing = (5, 10);
         public HelpCommand(CommandParser parser) : base(parser, "help", new List<string>() { "-h", "-help" })
         {
             Help = new HelpOutput() {
@@ -60,7 +60,7 @@ namespace CustomRunCommands.Commands
                 Console.WriteLine("List of avaliable commands: \n");
                 CMDParser.CommandsList.ForEach(cmd => {
                     if (cmd.Help.Avaliable) {
-                        Console.WriteLine($"crc {cmd.Label.PadRight(OutputSpacing.maxLabel)} {cmd.Help.Arguments.PadRight(OutputSpacing.maxArgument+4)} {cmd.Help.Discription}");
+                        Console.WriteLine($"crc {cmd.Label.PadRight(OutputSpacing.maxLabel)} {cmd.Help.Arguments.PadRight(OutputSpacing.maxArgument + 4)} {cmd.Help.Discription}");
                     }
                 });
             }
