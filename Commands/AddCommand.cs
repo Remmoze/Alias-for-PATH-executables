@@ -35,7 +35,9 @@ namespace CustomRunCommands.Commands
                 return new Error(CommandOutput.Incorrect_Argument, $"Failed to verify path \"{path}\"");
             }
 
-            //need to check if shortcut already exists!!!
+            if (CMDParser.Storage.Shortcuts.FirstOrDefault(sc => sc.ShortName == shortcut) != null) {
+                return new Error(CommandOutput.Fail, $"Failed to add shortcut \"{shortcut}\", it already exists!");
+            }
 
             return OnExecute(new string[] { shortcut, path });
         }
@@ -44,7 +46,7 @@ namespace CustomRunCommands.Commands
         {
             var shortcut = new Shortcut(arguments[0], arguments[1]);
 
-            if(!CMDParser.Storage.AddShortcut(shortcut)) {
+            if (!CMDParser.Storage.AddShortcut(shortcut)) {
                 return new Error(CommandOutput.Fail, "Unable to add a shortcut");
             }
 

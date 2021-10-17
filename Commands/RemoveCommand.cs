@@ -10,7 +10,7 @@ namespace CustomRunCommands.Commands
     {
         private List<Shortcut> Shortcuts => CMDParser.Storage.Shortcuts;
 
-        public RemoveCommand(CommandParser parser) : base(parser, "remove", new List<string>() { "r" })
+        public RemoveCommand(CommandParser parser) : base(parser, "remove", new List<string>() { "r", "d", "delete" })
         {
             Help = new HelpOutput() {
                 Arguments = "<shortcut>",
@@ -26,6 +26,10 @@ namespace CustomRunCommands.Commands
             }
             else if (arguments.Length > 1) {
                 return new Error(CommandOutput.Too_Many_Arguments);
+            }
+
+            if (Shortcuts.FirstOrDefault(sc => sc.ShortName == arguments[0]) == null) {
+                return new Error(CommandOutput.Fail, $"Failed to remove shortcut \"{arguments[0]}\", it does not exists!");
             }
 
             return OnExecute(arguments);

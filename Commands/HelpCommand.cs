@@ -60,7 +60,7 @@ namespace CustomRunCommands.Commands
                 Console.WriteLine("List of avaliable commands: \n");
                 CMDParser.CommandsList.ForEach(cmd => {
                     if (cmd.Help.Avaliable) {
-                        Console.WriteLine($"crc {cmd.Label.PadRight(OutputSpacing.maxLabel)} {cmd.Help.Arguments.PadRight(OutputSpacing.maxArgument + 4)} {cmd.Help.Discription}");
+                        Console.WriteLine($"crc {cmd.Label.PadRight(OutputSpacing.maxLabel)} {cmd.Help.Arguments.PadRight(OutputSpacing.maxArgument + 1)} - {cmd.Help.Discription}");
                     }
                 });
             }
