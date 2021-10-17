@@ -12,6 +12,7 @@ namespace CustomRunCommands.Commands
         public bool Avaliable { get { return Arguments != "" || Discription != ""; } }
         public string Arguments = "";
         public string Discription = "";
+        public string Example = "";
     }
 
     public abstract class Command
@@ -25,6 +26,8 @@ namespace CustomRunCommands.Commands
 
         public abstract Error OnExecute(string[] arguments);
         public abstract Error TryExecute(string[] arguments);
+        public virtual void AfterInit() { }
+
         public Command(CommandParser parser, string defaultLabel, List<string> labels)
         {
             (CMDParser, Alias) = (parser, labels);

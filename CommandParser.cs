@@ -24,8 +24,12 @@ namespace CustomRunCommands
             CommandsList = new List<Command>
             {
                 new HelpCommand(this),
-                new InfoCommand(this)
+                new InfoCommand(this),
+
+                new AddCommand(this)
             };
+
+            CommandsList.ForEach(cmd => cmd.AfterInit());
         }
 
         public Command FindCommand(string command)
@@ -48,52 +52,16 @@ namespace CustomRunCommands
 
         public void ParseCommand(string[] args)
         {
-            if(args.Length == 0) {
+            if (args.Length == 0) {
                 FindCommand("help").OnExecute(args);
                 return;
-            } else {
+            }
+            else {
                 var cmd = args[0];
                 args = args.Skip(1).ToArray();
                 ExecuteCommand(cmd, args);
             }
         }
 
-
-        /*
-        static public bool VerifyProgram(string path)
-        {
-            var program = Path.GetFileName(path);
-            if (Path.GetExtension(path) != ".exe") return false;
-            if (string.IsNullOrEmpty(Path.GetFileNameWithoutExtension(path))) return false;
-
-            //maybe add more checks later?
-
-            return true;
-        }
-
-        static public Tuple<string, string> GetArguments(String[] args)
-        {
-            Console.WriteLine();
-            if (args.Length != 2) {
-                Console.WriteLine("Usage: \ncrc <shortcut> <location>");
-                return null;
-            }
-            var shortcut = args[0];
-            var location = Path.GetFullPath(args[1]);
-
-            Console.WriteLine("Provided arguments:");
-            Console.WriteLine();
-            Console.WriteLine("Shortcut:\t" + shortcut);
-            Console.WriteLine("Location:\t" + location);
-            Console.WriteLine();
-
-            Console.Write("Is this correct? (y/n): ");
-            if (Console.ReadLine() != "y") {
-                Console.WriteLine("Well be careful next time.");
-                return null;
-            }
-            return new Tuple<string, string>(shortcut, location);
-        }
-        */
     }
 }
