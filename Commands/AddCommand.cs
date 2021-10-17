@@ -35,6 +35,8 @@ namespace CustomRunCommands.Commands
                 return new Error(CommandOutput.Incorrect_Argument, $"Failed to verify path \"{path}\"");
             }
 
+            //need to check if shortcut already exists!!!
+
             return OnExecute(new string[] { shortcut, path });
         }
 
