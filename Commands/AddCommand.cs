@@ -10,7 +10,7 @@ namespace CustomRunCommands.Commands
 {
     class AddCommand : Command
     {
-        public AddCommand(CommandParser parser) : base(parser, "add", new List<string>() { "install" })
+        public AddCommand(CommandParser parser) : base(parser, "add", new List<string>() { "install", "a" })
         {
             Help = new HelpOutput() {
                 Arguments = "<shortcut> <path>",
@@ -44,11 +44,7 @@ namespace CustomRunCommands.Commands
         {
             var shortcut = new Shortcut(arguments[0], arguments[1]);
 
-            if (shortcut.Install()) {
-                CMDParser.Storage.AddShortcut(shortcut);
-                CMDParser.Storage.Save();
-            }
-            else {
+            if(!CMDParser.Storage.AddShortcut(shortcut)) {
                 return new Error(CommandOutput.Fail, "Unable to add a shortcut");
             }
 

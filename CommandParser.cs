@@ -26,7 +26,8 @@ namespace CustomRunCommands
                 new HelpCommand(this),
                 new InfoCommand(this),
 
-                new AddCommand(this)
+                new AddCommand(this),
+                new RemoveCommand(this)
             };
 
             CommandsList.ForEach(cmd => cmd.AfterInit());
@@ -45,9 +46,7 @@ namespace CustomRunCommands
                 return;
             }
             var error = foundCommand.TryExecute(arguments);
-            if (error.Type != CommandOutput.Success) {
-                Console.WriteLine(error);
-            }
+            Console.WriteLine(error);
         }
 
         public void ParseCommand(string[] args)

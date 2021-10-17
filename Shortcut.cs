@@ -44,12 +44,29 @@ namespace CustomRunCommands
                 reg.SetValue("Path", FileDirectory);
                 return true;
             }
-            catch (SecurityException SException) {
-                Console.WriteLine("The user does not have the permissions required to create or open the registry key.");
+            catch (Exception e) {
+                Console.WriteLine(e.Message);
                 return false;
             }
-            catch (UnauthorizedAccessException YAException) {
-                Console.WriteLine("The RegistryKey cannot be written to; for example, it was not opened as a writable key , or the user does not have the necessary access rights.");
+        }
+
+        public bool Uninstall()
+        {
+            Debug.WriteLine($"Deleting a shortcut \"{ShortName}\" from {Path}");
+
+            try {
+                var reg = Registry.LocalMachine.OpenSubKey($"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\", true);
+                
+                if (!reg.GetSubKeyNames().Contains($"{ShortName}.exe")) {
+                    Debug.WriteLine($"Tried removing shortcut \"{ShortName}\" from the registery, but it was absent.");
+                    return true;
+                }
+                
+                reg.DeleteSubKey(ShortName + ".exe");
+                return true;
+            }
+            catch (Exception e) {
+                Console.WriteLine(e.Message);
                 return false;
             }
         }

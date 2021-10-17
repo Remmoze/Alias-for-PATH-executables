@@ -20,6 +20,7 @@ namespace CustomRunCommands
         const string StorageFilePath = StorageDirectoryPath + "/.path.json";
 
         private JsonStorage Data = new JsonStorage();
+        public List<Shortcut> Shortcuts => Data.Shortcuts;
 
         public Storage()
         {
@@ -36,14 +37,31 @@ namespace CustomRunCommands
             }
         }
 
-        public void AddShortcut(Shortcut shortcut)
+        public bool AddShortcut(Shortcut shortcut)
         {
             shortcut.CreationDate = DateTime.Now;
-            Data.Shortcuts.Add(shortcut);
-            Debug.WriteLine($"Added a new storage shortcut \"{shortcut.ShortName}\" to {shortcut.Path}");
+            if(shortcut.Install()) { 
+                Shortcuts.Add(shortcut);
+                Save();
+                Debug.WriteLine($"Added a new storage shortcut \"{shortcut.ShortName}\" to {shortcut.Path}");
+                return true;
+            }
+            return false;
         }
 
-        public void Save()
+        public bool RemoveShortcut(string shortcut) =>
+            RemoveShortcut(Shortcuts.FirstOrDefault(sc => sc.ShortName.Equals(shortcut)));
+
+        public bool RemoveShortcut(Shortcut shortcut)
+        {
+            if (shortcut.Uninstall() && Data.Shortcuts.Remove(shortcut)) {
+                Save();
+                return true;
+            }
+            return false;
+        }
+
+        private void Save()
         {
             File.WriteAllText(StorageFilePath, SerializeJson());
             Debug.WriteLine("Storage file has been saved.");

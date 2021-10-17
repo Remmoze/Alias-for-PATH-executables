@@ -9,10 +9,12 @@ namespace CustomRunCommands.Commands
 
     public class HelpOutput
     {
-        public bool Avaliable { get { return Arguments != "" || Discription != ""; } }
         public string Arguments = "";
         public string Discription = "";
         public string Example = "";
+
+        public bool Shown = true;
+        public bool Avaliable => Shown && (Arguments != "" || Discription != "");
     }
 
     public abstract class Command

@@ -8,7 +8,7 @@ namespace CustomRunCommands.Commands
 {
     class InfoCommand : Command
     {
-        public string AppVersion = "1.0.0";
+        public string AppVersion = "1.1.0";
 
         public InfoCommand(CommandParser parser) : base(parser, "info", new List<string>() { "version", "-v", "-info", "-version" })
         {
