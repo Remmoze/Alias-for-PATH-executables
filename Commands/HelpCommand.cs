@@ -46,7 +46,7 @@ namespace Alias_for_executables.Commands
                     return new CommandResponse(CommandOutput.Fail, $"No help avaliable for {cmdName}");
                 }
 
-                Console.WriteLine($"\n{Globals.ProgramPrefix} {cmd.Label} {cmd.Help.Arguments} \t - {cmd.Help.Discription}");
+                Console.WriteLine($"{Globals.ProgramPrefix} {cmd.Label} {cmd.Help.Arguments} \t - {cmd.Help.Discription}");
                 if (cmd.Help.Example != "") {
                     Console.WriteLine("\nExample:");
                     Console.WriteLine(cmd.Help.Example);
