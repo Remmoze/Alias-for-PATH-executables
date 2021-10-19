@@ -47,8 +47,9 @@ namespace Alias_for_executables
                 return;
             }
             var error = foundCommand.TryExecute(arguments);
-            if(error.Type != CommandOutput.Success)
+            if(!string.IsNullOrWhiteSpace(error.ToString())) {
                 Console.WriteLine(error);
+            }
         }
 
         public void ParseCommand(string[] args)

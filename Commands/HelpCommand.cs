@@ -14,7 +14,7 @@ namespace Alias_for_executables.Commands
             Help = new HelpOutput() {
                 Discription = "Shows general help or help for a specific command",
                 Arguments = "[?command]",
-                Example = "crc help add"
+                Example = $"{Globals.ProgramPrefix} help add"
             };
         }
 
@@ -31,26 +31,27 @@ namespace Alias_for_executables.Commands
             OutputSpacing = CalculateSpacing();
         }
 
-        public override Error TryExecute(string[] arguments)
+        public override CommandResponse TryExecute(string[] arguments)
         {
             if (arguments.Length > 1) {
-                return new Error(CommandOutput.Too_Many_Arguments);
+                return new CommandResponse(CommandOutput.Too_Many_Arguments);
             }
             return OnExecute(arguments);
         }
 
-        public override Error OnExecute(string[] arguments)
+        public override CommandResponse OnExecute(string[] arguments)
         {
             if (arguments.Length > 0) {
                 var cmdName = arguments[0];
                 var cmd = CMDParser.CommandsList.FirstOrDefault(command => command.Label == cmdName);
                 if (cmd == null) {
-                    return new Error(CommandOutput.Incorrect_Argument, $"Unknown command {cmdName}");
+                    return new CommandResponse(CommandOutput.Incorrect_Argument, $"Unknown command {cmdName}");
                 }
                 if (!cmd.Help.Avaliable) {
-                    return new Error(CommandOutput.Fail, "No help avaliable for " + cmdName);
+                    return new CommandResponse(CommandOutput.Fail, "No help avaliable for " + cmdName);
                 }
-                Console.WriteLine($"\ncrc {cmd.Label} {cmd.Help.Arguments} \t - {cmd.Help.Discription}");
+
+                Console.WriteLine($"\n{Globals.ProgramPrefix} {cmd.Label} {cmd.Help.Arguments} \t - {cmd.Help.Discription}");
                 if (cmd.Help.Example != "") {
                     Console.WriteLine("\nExample:");
                     Console.WriteLine(cmd.Help.Example);
@@ -60,13 +61,11 @@ namespace Alias_for_executables.Commands
                 Console.WriteLine("List of avaliable commands: \n");
                 CMDParser.CommandsList.ForEach(cmd => {
                     if (cmd.Help.Avaliable) {
-                        Console.WriteLine($"crc {cmd.Label.PadRight(OutputSpacing.maxLabel)} {cmd.Help.Arguments.PadRight(OutputSpacing.maxArgument + 1)} - {cmd.Help.Discription}");
+                        Console.WriteLine($"{Globals.ProgramPrefix} {cmd.Label.PadRight(OutputSpacing.maxLabel)} {cmd.Help.Arguments.PadRight(OutputSpacing.maxArgument + 1)} - {cmd.Help.Discription}");
                     }
                 });
             }
-            return new Error(CommandOutput.Success);
+            return new CommandResponse(CommandOutput.Success);
         }
-
-
     }
 }

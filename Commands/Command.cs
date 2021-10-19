@@ -24,10 +24,10 @@ namespace Alias_for_executables.Commands
         protected readonly List<string> Alias;
         public string Label { get { return Alias[0]; } }
 
-        public HelpOutput Help = new HelpOutput();
+        public HelpOutput Help = new();
 
-        public abstract Error OnExecute(string[] arguments);
-        public abstract Error TryExecute(string[] arguments);
+        public abstract CommandResponse OnExecute(string[] arguments);
+        public abstract CommandResponse TryExecute(string[] arguments);
         public virtual void AfterInit() { }
 
         public Command(CommandParser parser, string defaultLabel, List<string> labels)
@@ -40,6 +40,5 @@ namespace Alias_for_executables.Commands
         {
             return Alias.Contains(command);
         }
-
     }
 }

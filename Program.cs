@@ -13,7 +13,7 @@ namespace Alias_for_executables
 
 #if DEBUG
             while (true) {
-                Console.Write("Gimme the args: \ncrc ");
+                Console.Write($"Gimme the args: \n{Globals.ProgramPrefix} ");
                 args = Console.ReadLine().Split(" ");
 
                 CMDParser.ParseCommand(args);

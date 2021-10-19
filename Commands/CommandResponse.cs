@@ -15,13 +15,13 @@ namespace Alias_for_executables.Commands
         Incorrect_Argument
     }
 
-    public class Error
+    public class CommandResponse
     {
         public CommandOutput Type;
         public string DefaultDiscription { get { return GetDefaultDiscription(); } }
         public string ExtraInformation;
 
-        public Error(CommandOutput type, string extra = "") => (Type, ExtraInformation) = (type, extra);
+        public CommandResponse(CommandOutput type, string extra = "") => (Type, ExtraInformation) = (type, extra);
 
         private string GetDefaultDiscription()
         {
@@ -39,6 +39,12 @@ namespace Alias_for_executables.Commands
 
         public override string ToString()
         {
+            if (Type.Equals(CommandOutput.Success)) {
+                if (string.IsNullOrWhiteSpace(ExtraInformation)) {
+                    return "";
+                }
+                return $"[SUCCESS]: {ExtraInformation}";
+            }
             return $"[FAIL]: {DefaultDiscription} {ExtraInformation}";
         }
     }

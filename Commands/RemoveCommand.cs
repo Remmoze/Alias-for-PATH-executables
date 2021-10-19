@@ -15,32 +15,34 @@ namespace Alias_for_executables.Commands
             Help = new HelpOutput() {
                 Arguments = "<shortcut>",
                 Discription = "Remove a shortcut",
-                Example = "crc remove photos"
+                Example = $"{Globals.ProgramPrefix} remove photos"
             };
         }
 
-        public override Error TryExecute(string[] arguments)
+        public override CommandResponse TryExecute(string[] arguments)
         {
+            var shortcut = arguments[0];
             if (arguments.Length < 1) {
-                return new Error(CommandOutput.Too_Few_Arguments);
+                return new CommandResponse(CommandOutput.Too_Few_Arguments);
             }
             else if (arguments.Length > 1) {
-                return new Error(CommandOutput.Too_Many_Arguments);
+                return new CommandResponse(CommandOutput.Too_Many_Arguments);
             }
 
-            if (Shortcuts.FirstOrDefault(sc => sc.ShortName == arguments[0]) == null) {
-                return new Error(CommandOutput.Fail, $"Failed to remove shortcut \"{arguments[0]}\", it does not exists!");
+            if (Shortcuts.FirstOrDefault(sc => sc.ShortName == shortcut) == null) {
+                return new CommandResponse(CommandOutput.Fail, $"Failed to remove shortcut \"{arguments[0]}\", it does not exists!");
             }
 
             return OnExecute(arguments);
         }
 
-        public override Error OnExecute(string[] arguments)
+        public override CommandResponse OnExecute(string[] arguments)
         {
-            if (!CMDParser.Storage.RemoveShortcut(arguments[0])) {
-                return new Error(CommandOutput.Success);
+            var shortcut = arguments[0];
+            if (!CMDParser.Storage.RemoveShortcut(shortcut)) {
+                return new CommandResponse(CommandOutput.Fail, "Could not remove the shortcut.");
             }
-            return new Error(CommandOutput.Fail);
+            return new CommandResponse(CommandOutput.Success, $"Shortcut \"{shortcut} has been removed!\"");
         }
     }
 }

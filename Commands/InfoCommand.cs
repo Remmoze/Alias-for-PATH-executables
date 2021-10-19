@@ -8,8 +8,6 @@ namespace Alias_for_executables.Commands
 {
     class InfoCommand : Command
     {
-        public string AppVersion = "1.2";
-
         public InfoCommand(CommandParser parser) : base(parser, "info", new List<string>() { "version", "-v", "-info", "-version" })
         {
             Help = new HelpOutput() {
@@ -17,16 +15,16 @@ namespace Alias_for_executables.Commands
             };
         }
 
-        public override Error TryExecute(string[] arguments)
+        public override CommandResponse TryExecute(string[] arguments)
         {
             return OnExecute(arguments);
         }
 
-        public override Error OnExecute(string[] arguments)
+        public override CommandResponse OnExecute(string[] arguments)
         {
-            Console.WriteLine("\t----\t Custom RUN Commands (crc) \t---- ");
-            Console.WriteLine("\t\t Version: " + AppVersion);
-            return new Error(CommandOutput.Success);
+            Console.WriteLine($"\t----\t Alias for PATH executables ({Globals.ProgramPrefix}) \t---- ");
+            Console.WriteLine("\t\t Version: " + Globals.ProgramVersion);
+            return new CommandResponse(CommandOutput.Success);
         }
     }
 }

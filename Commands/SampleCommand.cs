@@ -13,7 +13,7 @@ namespace Alias_for_executables.Commands
             Help = new HelpOutput() {
                 Discription = "This is a sample command.",
                 Arguments = "<none> [?none]",
-                Example = "crc sample none",
+                Example = $"{Globals.ProgramPrefix} sample none",
                 Shown = false
             };
         }
@@ -23,12 +23,12 @@ namespace Alias_for_executables.Commands
             throw new NotImplementedException();
         }
 
-        public override Error TryExecute(string[] arguments)
+        public override CommandResponse TryExecute(string[] arguments)
         {
             throw new NotImplementedException();
         }
 
-        public override Error OnExecute(string[] arguments)
+        public override CommandResponse OnExecute(string[] arguments)
         {
             throw new NotImplementedException();
         }

@@ -13,18 +13,22 @@ namespace Alias_for_executables.Commands
             Help = new HelpOutput() {
                 Discription = "List all shortcuts",
                 Arguments = "",
-                Example = "crc list",
+                Example = $"{Globals.ProgramPrefix} list",
             };
         }
 
-        public override Error TryExecute(string[] arguments)
+        public override CommandResponse TryExecute(string[] arguments)
         {
             return OnExecute(arguments);
         }
 
-        public override Error OnExecute(string[] arguments)
+        public override CommandResponse OnExecute(string[] arguments)
         {
-            Console.WriteLine("List of avaliable shortcuts:");
+            if(CMDParser.Storage.Shortcuts.Count == 0) {
+                return new CommandResponse(CommandOutput.Success, "No shortcuts were found.");
+            }
+
+            Console.WriteLine("List of avaliable shortcuts:\n");
             CMDParser.Storage.Shortcuts.ForEach(cmd => {
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine($"  {cmd.ShortName}");
@@ -33,7 +37,7 @@ namespace Alias_for_executables.Commands
                 Console.WriteLine($"  {cmd.CreationDate:yyyy/MM/dd HH:mm:ss}");
                 Console.WriteLine();
             });
-            return new Error(CommandOutput.Success);
+            return new CommandResponse(CommandOutput.Success);
         }
     }
 }

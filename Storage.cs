@@ -19,7 +19,7 @@ namespace Alias_for_executables
         const string StorageDirectoryPath = @"C:/PATH";
         const string StorageFilePath = StorageDirectoryPath + "/.path.json";
 
-        private JsonStorage Data = new JsonStorage();
+        private JsonStorage Data = new();
         public List<Shortcut> Shortcuts => Data.Shortcuts;
 
         public Storage()
