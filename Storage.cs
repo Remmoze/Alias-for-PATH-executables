@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using System.Text.Json;
 using System.Linq;
 using System.Diagnostics;
+using System.Collections.Generic;
+
 using Microsoft.Win32;
 
 namespace Alias_for_executables

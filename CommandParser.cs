@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Alias_for_executables.Commands;
-using System.IO;
 
 namespace Alias_for_executables
 {

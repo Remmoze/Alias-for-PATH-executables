@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Alias_for_executables.Commands
+﻿namespace Alias_for_executables.Commands
 {
     public enum CommandOutput
     {

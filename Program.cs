@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.IO;
 
 namespace Alias_for_executables
 {
