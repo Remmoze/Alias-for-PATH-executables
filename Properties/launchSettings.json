@@ -1,7 +1,7 @@
 {
-  "profiles": {
-    "CustomRunCommands": {
-      "commandName": "Project"
+    "profiles": {
+        "Alias_for_executables": {
+            "commandName": "Project"
+        }
     }
-  }
 }

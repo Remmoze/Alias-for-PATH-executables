@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace CustomRunCommands.Commands
+namespace Alias_for_executables.Commands
 {
     class AddCommand : Command
     {

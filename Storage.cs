@@ -6,7 +6,7 @@ using System.Text.Json;
 using System.Linq;
 using System.Diagnostics;
 
-namespace CustomRunCommands
+namespace Alias_for_executables
 {
     public class JsonStorage
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CustomRunCommands.Commands
+namespace Alias_for_executables.Commands
 {
     public class HelpCommand : Command
     {

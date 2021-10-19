@@ -2,7 +2,7 @@
 using System.Linq;
 using System.IO;
 
-namespace CustomRunCommands
+namespace Alias_for_executables
 {
     class Program
     {

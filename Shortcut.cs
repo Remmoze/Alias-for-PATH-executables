@@ -10,7 +10,7 @@ using System.Security;
 
 #pragma warning disable CA1416
 
-namespace CustomRunCommands
+namespace Alias_for_executables
 {
     public class Shortcut
     {

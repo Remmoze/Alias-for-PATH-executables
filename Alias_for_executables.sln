@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31727.386
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomRunCommands", "CustomRunCommands.csproj", "{5D35A308-8159-408E-BAF5-DF71ECF81385}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alias_for_executables", "Alias_for_executables.csproj", "{5D35A308-8159-408E-BAF5-DF71ECF81385}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

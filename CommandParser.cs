@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CustomRunCommands.Commands;
+using Alias_for_executables.Commands;
 using System.IO;
 
-namespace CustomRunCommands
+namespace Alias_for_executables
 {
     public class CommandParser
     {
