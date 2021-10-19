@@ -5,20 +5,18 @@ namespace Alias_for_executables.Commands
 {
     class RemoveCommand : Command
     {
-        private List<Shortcut> Shortcuts => CMDParser.Storage.Shortcuts;
-
         public RemoveCommand(CommandParser parser) : base(parser, "remove", new List<string>() { "r", "d", "delete" })
         {
             Help = new HelpOutput() {
-                Arguments = "<shortcut>",
-                Discription = "Remove a shortcut",
+                Arguments = "<alias>",
+                Discription = "Remove an alias",
                 Example = $"{Globals.ProgramPrefix} remove photos"
             };
         }
 
         public override CommandResponse TryExecute(string[] arguments)
         {
-            var shortcut = arguments[0];
+            var alias = arguments[0];
             if (arguments.Length < 1) {
                 return new CommandResponse(CommandOutput.Too_Few_Arguments);
             }
@@ -26,8 +24,8 @@ namespace Alias_for_executables.Commands
                 return new CommandResponse(CommandOutput.Too_Many_Arguments);
             }
 
-            if (Shortcuts.FirstOrDefault(sc => sc.ShortName == shortcut) == null) {
-                return new CommandResponse(CommandOutput.Fail, $"Failed to remove shortcut \"{arguments[0]}\", it does not exists!");
+            if (CMDParser.Storage.Aliases.FirstOrDefault(sc => sc.Name == alias) == null) {
+                return new CommandResponse(CommandOutput.Fail, $"Failed to remove alias \"{arguments[0]}\", it does not exists!");
             }
 
             return OnExecute(arguments);
@@ -35,11 +33,11 @@ namespace Alias_for_executables.Commands
 
         public override CommandResponse OnExecute(string[] arguments)
         {
-            var shortcut = arguments[0];
-            if (!CMDParser.Storage.RemoveShortcut(shortcut))
-                return new CommandResponse(CommandOutput.Fail, "Could not remove the shortcut.");
+            var alias = arguments[0];
+            if (!CMDParser.Storage.RemoveAlias(alias))
+                return new CommandResponse(CommandOutput.Fail, "Could not remove the alias.");
 
-            return new CommandResponse(CommandOutput.Success, $"Shortcut \"{shortcut} has been removed!\"");
+            return new CommandResponse(CommandOutput.Success, $"Alias \"{alias} has been removed!\"");
         }
     }
 }

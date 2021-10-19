@@ -10,8 +10,8 @@ namespace Alias_for_executables.Commands
         public AddCommand(CommandParser parser) : base(parser, "add", new List<string>() { "install", "a" })
         {
             Help = new HelpOutput() {
-                Arguments = "<shortcut> <path>",
-                Discription = "Add a shortcut to the <path> executable",
+                Arguments = "<alias> <path>",
+                Discription = "Add an alias to the <path> executable",
                 Example = $"{Globals.ProgramPrefix} add photos \"./PhotosApp/core/app.exe\""
             };
         }
@@ -22,9 +22,9 @@ namespace Alias_for_executables.Commands
                 return new CommandResponse(CommandOutput.Too_Few_Arguments);
             }
 
-            var shortcut = arguments[0];
-            if (!Regex.IsMatch(shortcut, @"^[a-zA-Z0-9_]+$")) {
-                return new CommandResponse(CommandOutput.Incorrect_Argument, $"Shortcut \"{shortcut}\" should only contain letters, numbers, and _");
+            var alias = arguments[0];
+            if (!Regex.IsMatch(alias, @"^[a-zA-Z0-9_]+$")) {
+                return new CommandResponse(CommandOutput.Incorrect_Argument, $"Alias \"{alias}\" should only contain letters, numbers, and _");
             }
 
             var path = Path.GetFullPath(string.Join(" ", arguments.Skip(1)).Trim('\"'));
@@ -32,26 +32,26 @@ namespace Alias_for_executables.Commands
                 return new CommandResponse(CommandOutput.Incorrect_Argument, $"Failed to verify path \"{path}\"");
             }
 
-            if (CMDParser.Storage.Shortcuts.FirstOrDefault(sc => sc.ShortName == shortcut) != null) {
-                return new CommandResponse(CommandOutput.Fail, $"Failed to add shortcut \"{shortcut}\", it already exists!");
+            if (CMDParser.Storage.Aliases.FirstOrDefault(sc => sc.Name == alias) != null) {
+                return new CommandResponse(CommandOutput.Fail, $"Failed to add alias \"{alias}\", it already exists!");
             }
 
             if(Path.GetDirectoryName(path).Equals("c:\\")) {
-                return new CommandResponse(CommandOutput.Fail, $"Failed to add shortcut \"{shortcut}\", can not add shortcuts to root directory.");
+                return new CommandResponse(CommandOutput.Fail, $"Failed to add alias \"{alias}\". Can not add aliases to root directory.");
             }
 
-            return OnExecute(new string[] { shortcut, path });
+            return OnExecute(new string[] { alias, path });
         }
 
         public override CommandResponse OnExecute(string[] arguments)
         {
-            var shortcut = new Shortcut(arguments[0], arguments[1]);
+            var alias = new Alias(arguments[0], arguments[1]);
 
-            if (!CMDParser.Storage.AddShortcut(shortcut)) {
-                return new CommandResponse(CommandOutput.Fail, "Unable to add a shortcut");
+            if (!CMDParser.Storage.AddAlias(alias)) {
+                return new CommandResponse(CommandOutput.Fail, "Unable to add an alias");
             }
 
-            return new CommandResponse(CommandOutput.Success, $"Shortcut \"{shortcut.ShortName} has been installed!\"");
+            return new CommandResponse(CommandOutput.Success, $"Alias \"{alias.Name} has been installed!\"");
         }
 
         static public bool VerifyProgram(string path)

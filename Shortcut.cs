@@ -6,24 +6,24 @@ using Microsoft.Win32;
 
 namespace Alias_for_executables
 {
-    public class Shortcut
+    public class Alias
     {
-        public string ShortName { get; set; }
+        public string Name { get; set; }
         public string Path { get; set; }
         public DateTime? CreationDate { get; set; }
 
         public string FileDirectory => System.IO.Path.GetDirectoryName(Path);
 
-        public Shortcut() { }
-        public Shortcut(string name, string path) => (ShortName, Path) = (name, path);
+        public Alias() { }
+        public Alias(string name, string path) => (Name, Path) = (name, path);
 
         public bool Install()
         {
-            Debug.WriteLine($"Installing a new shortcut \"{ShortName}\" to {Path}");
+            Debug.WriteLine($"Installing a new alias \"{Name}\" to {Path}");
 
             try {
                 var reg = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths", true);
-                reg = reg.CreateSubKey(ShortName + ".exe");
+                reg = reg.CreateSubKey(Name + ".exe");
 
                 reg.SetValue("", Path);
                 reg.SetValue("Path", FileDirectory);
@@ -41,17 +41,17 @@ namespace Alias_for_executables
 
         public bool Uninstall()
         {
-            Debug.WriteLine($"Deleting a shortcut \"{ShortName}\" from {Path}");
+            Debug.WriteLine($"Deleting an alias \"{Name}\" from {Path}");
 
             try {
                 var reg = Registry.LocalMachine.OpenSubKey($"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\", true);
 
-                if (!reg.GetSubKeyNames().Contains($"{ShortName}.exe")) {
-                    Debug.WriteLine($"Shortcut \"{ShortName}\" was not found in registry");
+                if (!reg.GetSubKeyNames().Contains($"{Name}.exe")) {
+                    Debug.WriteLine($"Alias \"{Name}\" was not found in registry");
                     return true;
                 }
 
-                reg.DeleteSubKey(ShortName + ".exe");
+                reg.DeleteSubKey(Name + ".exe");
                 return true;
             }
             catch (Exception e) {

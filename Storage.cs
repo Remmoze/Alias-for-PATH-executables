@@ -9,43 +9,43 @@ namespace Alias_for_executables
 {
     public class Storage
     {
-        public List<Shortcut> Shortcuts = new();
+        public List<Alias> Aliases = new();
         public Storage()
         {
             var reg = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths", true);
             foreach (var key in reg.GetSubKeyNames()) {
-                var regShortcut = reg.OpenSubKey(key);
-                if (regShortcut.GetValue("Alias") == null)
+                var regAlias = reg.OpenSubKey(key);
+                if (regAlias.GetValue("Alias") == null)
                     continue;
 
                 var cleanKey = key;
                 if (key.EndsWith(".exe"))
                     cleanKey = key.Substring(0, key.Length - key.IndexOf(".exe") + 1);
 
-                var date = regShortcut.GetValue("CreationDate");
+                var date = regAlias.GetValue("CreationDate");
 
-                Shortcuts.Add(new Shortcut() {
-                    ShortName = cleanKey,
-                    Path = (string)regShortcut.GetValue(""),
+                Aliases.Add(new Alias() {
+                    Name = cleanKey,
+                    Path = (string)regAlias.GetValue(""),
                     CreationDate = date == null ? null : DateTime.Parse((string)date),
                 });
             }
         }
 
-        public bool AddShortcut(Shortcut shortcut)
+        public bool AddAlias(Alias alias)
         {
-            if (shortcut.Install()) {
-                Shortcuts.Add(shortcut);
-                Debug.WriteLine($"Added a new storage shortcut \"{shortcut.ShortName}\" to {shortcut.Path}");
+            if (alias.Install()) {
+                Aliases.Add(alias);
+                Debug.WriteLine($"Added a new storage alias \"{alias.Name}\" to {alias.Path}");
                 return true;
             }
             return false;
         }
 
-        public bool RemoveShortcut(string shortcut) =>
-            RemoveShortcut(Shortcuts.FirstOrDefault(sc => sc.ShortName.Equals(shortcut)));
+        public bool RemoveAlias(string alias) =>
+            RemoveAlias(Aliases.FirstOrDefault(sc => sc.Name.Equals(alias)));
 
-        public bool RemoveShortcut(Shortcut shortcut) =>
-            shortcut.Uninstall() && Shortcuts.Remove(shortcut);
+        public bool RemoveAlias(Alias alias) =>
+            alias.Uninstall() && Aliases.Remove(alias);
     }
 }

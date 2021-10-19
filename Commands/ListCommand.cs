@@ -8,7 +8,7 @@ namespace Alias_for_executables.Commands
         public ListCommand(CommandParser parser) : base(parser, "list", new List<string> { "l", "get", "-l" })
         {
             Help = new HelpOutput() {
-                Discription = "List all shortcuts",
+                Discription = "List all aliases",
                 Arguments = "",
                 Example = $"{Globals.ProgramPrefix} list",
             };
@@ -21,15 +21,15 @@ namespace Alias_for_executables.Commands
 
         public override CommandResponse OnExecute(string[] arguments)
         {
-            if (CMDParser.Storage.Shortcuts.Count == 0) {
-                Console.WriteLine("No shortcuts were found.");
+            if (CMDParser.Storage.Aliases.Count == 0) {
+                Console.WriteLine("No aliases were found.");
                 return new CommandResponse(CommandOutput.Success);
             }
 
-            Console.WriteLine("List of avaliable shortcuts:\n");
-            CMDParser.Storage.Shortcuts.ForEach(cmd => {
+            Console.WriteLine("List of avaliable aliases:\n");
+            CMDParser.Storage.Aliases.ForEach(cmd => {
                 Console.ForegroundColor = ConsoleColor.Blue;
-                Console.WriteLine($"  {cmd.ShortName}");
+                Console.WriteLine($"  {cmd.Name}");
                 Console.ResetColor();
                 Console.WriteLine($"  {cmd.Path}");
                 if (cmd.CreationDate != null)
