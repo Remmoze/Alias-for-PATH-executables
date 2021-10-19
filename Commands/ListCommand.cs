@@ -26,15 +26,15 @@ namespace Alias_for_executables.Commands
                 return new CommandResponse(CommandOutput.Success);
             }
 
-            Console.WriteLine("List of avaliable aliases:\n");
+            Console.WriteLine("List of avaliable aliases:");
             CMDParser.Storage.Aliases.ForEach(cmd => {
+                Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine($"  {cmd.Name}");
                 Console.ResetColor();
                 Console.WriteLine($"  {cmd.Path}");
                 if (cmd.CreationDate != null)
                     Console.WriteLine($"  {cmd.CreationDate:yyyy/MM/dd HH:mm:ss}");
-                Console.WriteLine();
             });
             return new CommandResponse(CommandOutput.Success);
         }

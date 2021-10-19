@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace Alias_for_executables
 {
@@ -9,19 +10,23 @@ namespace Alias_for_executables
             var storage = new Storage();
             var CMDParser = new CommandParser(storage);
 
-#if DEBUG
-            while (true) {
-                Console.Write($"Gimme the args: \n{Globals.ProgramPrefix} ");
-                args = Console.ReadLine().Split(" ");
+            Console.CancelKeyPress += new ConsoleCancelEventHandler(delegate (object sender, ConsoleCancelEventArgs args) {
+                Environment.Exit(0);
+            });
 
+            if (args.Length > 0) {
+                Console.WriteLine($"{Directory.GetCurrentDirectory()}> {Globals.ProgramPrefix} {string.Join(" ", args)}\n");
                 CMDParser.ParseCommand(args);
-
-                Console.ReadKey(true);
-                Console.Clear();
+                Console.WriteLine();
             }
-#endif
 
-            CMDParser.ParseCommand(args);
+            while (true) {
+                Console.Write($"{Directory.GetCurrentDirectory()}> {Globals.ProgramPrefix} ");
+                args = Console.ReadLine().Split(" ");
+                Console.WriteLine();
+                CMDParser.ParseCommand(args);
+                Console.WriteLine();
+            }
         }
     }
 }

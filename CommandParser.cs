@@ -25,7 +25,9 @@ namespace Alias_for_executables
 
                 new AddCommand(this),
                 new RemoveCommand(this),
-                new ListCommand(this)
+                new ListCommand(this),
+
+                new ExitCommand(this)
             };
 
             CommandsList.ForEach(cmd => cmd.AfterInit());
