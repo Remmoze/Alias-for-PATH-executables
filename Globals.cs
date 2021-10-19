@@ -8,7 +8,7 @@ namespace Alias_for_executables
 {
     public static class Globals
     {
-        public const string ProgramVersion = "1.3";
+        public const string ProgramVersion = "2.0";
         public const string ProgramPrefix = "alias";
     }
 }

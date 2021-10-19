@@ -8,15 +8,13 @@ using Microsoft.Win32;
 using System.IO;
 using System.Security;
 
-#pragma warning disable CA1416
-
 namespace Alias_for_executables
 {
     public class Shortcut
     {
         public string ShortName { get; set; }
         public string Path { get; set; }
-        public DateTime CreationDate { get; set; }
+        public DateTime? CreationDate { get; set; }
 
         public string FileDirectory
         {
@@ -42,6 +40,10 @@ namespace Alias_for_executables
 
                 reg.SetValue("", Path);
                 reg.SetValue("Path", FileDirectory);
+                reg.SetValue("Alias", true);
+
+                CreationDate = DateTime.Now;
+                reg.SetValue("CreationDate", DateTime.Now);
                 return true;
             }
             catch (Exception e) {
@@ -56,12 +58,12 @@ namespace Alias_for_executables
 
             try {
                 var reg = Registry.LocalMachine.OpenSubKey($"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\", true);
-                
+
                 if (!reg.GetSubKeyNames().Contains($"{ShortName}.exe")) {
                     Debug.WriteLine($"Tried removing shortcut \"{ShortName}\" from the registery, but it was absent.");
                     return true;
                 }
-                
+
                 reg.DeleteSubKey(ShortName + ".exe");
                 return true;
             }

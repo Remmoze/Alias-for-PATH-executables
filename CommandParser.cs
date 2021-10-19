@@ -47,7 +47,7 @@ namespace Alias_for_executables
                 return;
             }
             var error = foundCommand.TryExecute(arguments);
-            if(!string.IsNullOrWhiteSpace(error.ToString())) {
+            if (!string.IsNullOrWhiteSpace(error.ToString())) {
                 Console.WriteLine(error);
             }
         }

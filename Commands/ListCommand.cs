@@ -24,8 +24,9 @@ namespace Alias_for_executables.Commands
 
         public override CommandResponse OnExecute(string[] arguments)
         {
-            if(CMDParser.Storage.Shortcuts.Count == 0) {
-                return new CommandResponse(CommandOutput.Success, "No shortcuts were found.");
+            if (CMDParser.Storage.Shortcuts.Count == 0) {
+                Console.WriteLine("No shortcuts were found.");
+                return new CommandResponse(CommandOutput.Success);
             }
 
             Console.WriteLine("List of avaliable shortcuts:\n");
@@ -34,7 +35,8 @@ namespace Alias_for_executables.Commands
                 Console.WriteLine($"  {cmd.ShortName}");
                 Console.ResetColor();
                 Console.WriteLine($"  {cmd.Path}");
-                Console.WriteLine($"  {cmd.CreationDate:yyyy/MM/dd HH:mm:ss}");
+                if (cmd.CreationDate != null)
+                    Console.WriteLine($"  {cmd.CreationDate:yyyy/MM/dd HH:mm:ss}");
                 Console.WriteLine();
             });
             return new CommandResponse(CommandOutput.Success);

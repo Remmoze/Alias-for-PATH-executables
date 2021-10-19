@@ -5,44 +5,40 @@ using System.IO;
 using System.Text.Json;
 using System.Linq;
 using System.Diagnostics;
+using Microsoft.Win32;
 
 namespace Alias_for_executables
 {
-    public class JsonStorage
-    {
-        public DateTime CreationDate { get; set; }
-        public List<Shortcut> Shortcuts { get; set; }
-    }
-
     public class Storage
     {
-        const string StorageDirectoryPath = @"C:/PATH";
-        const string StorageFilePath = StorageDirectoryPath + "/.path.json";
-
-        private JsonStorage Data = new();
-        public List<Shortcut> Shortcuts => Data.Shortcuts;
+        public List<Shortcut> Shortcuts = new();
 
         public Storage()
         {
-            if (!Directory.Exists(StorageDirectoryPath)) {
-                Directory.CreateDirectory(StorageDirectoryPath);
-            }
-            if (!File.Exists(StorageFilePath)) {
-                GenerateNewStorageFile();
-                Debug.WriteLine("Generated a new storage file.");
-            }
-            else {
-                LoadStorageFile();
-                Debug.WriteLine("Storage file has been read.");
+            var reg = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths", true);
+            foreach (var key in reg.GetSubKeyNames()) {
+                var regShortcut = reg.OpenSubKey(key);
+                if (regShortcut.GetValue("Alias") != null) {
+
+                    var cleanKey = key;
+                    if (key.EndsWith(".exe"))
+                        cleanKey = key.Substring(0, key.Length - key.IndexOf(".exe") + 1);
+
+                    var date = regShortcut.GetValue("CreationDate");
+
+                    Shortcuts.Add(new Shortcut() {
+                        ShortName = cleanKey,
+                        Path = (string)regShortcut.GetValue(""),
+                        CreationDate = date == null ? null : DateTime.Parse((string)date),
+                    });
+                }
             }
         }
 
         public bool AddShortcut(Shortcut shortcut)
         {
-            shortcut.CreationDate = DateTime.Now;
-            if(shortcut.Install()) { 
+            if (shortcut.Install()) {
                 Shortcuts.Add(shortcut);
-                Save();
                 Debug.WriteLine($"Added a new storage shortcut \"{shortcut.ShortName}\" to {shortcut.Path}");
                 return true;
             }
@@ -54,48 +50,7 @@ namespace Alias_for_executables
 
         public bool RemoveShortcut(Shortcut shortcut)
         {
-            if (shortcut.Uninstall() && Data.Shortcuts.Remove(shortcut)) {
-                Save();
-                return true;
-            }
-            return false;
-        }
-
-        private void Save()
-        {
-            File.WriteAllText(StorageFilePath, SerializeJson());
-            Debug.WriteLine("Storage file has been saved.");
-        }
-
-        private string SerializeJson()
-        {
-            return JsonSerializer.Serialize(Data, new() {
-                IgnoreReadOnlyProperties = true,
-                WriteIndented = true,
-            });
-        }
-
-        private void GenerateNewStorageFile()
-        {
-            using (FileStream fs = File.Create(StorageFilePath)) {
-                Data = new JsonStorage();
-                Data.Shortcuts = new List<Shortcut>();
-                Data.CreationDate = DateTime.Now;
-                var info = new UTF8Encoding(true).GetBytes(SerializeJson());
-                fs.Write(info, 0, info.Length);
-            }
-        }
-
-        private void LoadStorageFile()
-        {
-            Data = JsonSerializer.Deserialize<JsonStorage>(File.ReadAllText(StorageFilePath));
-            if (Data == null) {
-                GenerateNewStorageFile();
-                return;
-            }
-            if (Data.Shortcuts == null) {
-                Data.Shortcuts = new List<Shortcut>();
-            }
+            return shortcut.Uninstall() && Shortcuts.Remove(shortcut);
         }
     }
 }
