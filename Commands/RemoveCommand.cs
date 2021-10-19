@@ -36,9 +36,9 @@ namespace Alias_for_executables.Commands
         public override CommandResponse OnExecute(string[] arguments)
         {
             var shortcut = arguments[0];
-            if (!CMDParser.Storage.RemoveShortcut(shortcut)) {
+            if (!CMDParser.Storage.RemoveShortcut(shortcut))
                 return new CommandResponse(CommandOutput.Fail, "Could not remove the shortcut.");
-            }
+
             return new CommandResponse(CommandOutput.Success, $"Shortcut \"{shortcut} has been removed!\"");
         }
     }

@@ -9,8 +9,7 @@ namespace Alias_for_executables.Commands
         public string Discription = "";
         public string Example = "";
 
-        public bool Shown = true;
-        public bool Avaliable => Shown && (Arguments != "" || Discription != "");
+        public bool Avaliable => Arguments != "" || Discription != "";
     }
 
     public abstract class Command

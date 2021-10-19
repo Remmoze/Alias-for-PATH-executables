@@ -36,6 +36,10 @@ namespace Alias_for_executables.Commands
                 return new CommandResponse(CommandOutput.Fail, $"Failed to add shortcut \"{shortcut}\", it already exists!");
             }
 
+            if(Path.GetDirectoryName(path).Equals("c:\\")) {
+                return new CommandResponse(CommandOutput.Fail, $"Failed to add shortcut \"{shortcut}\", can not add shortcuts to root directory.");
+            }
+
             return OnExecute(new string[] { shortcut, path });
         }
 
@@ -53,9 +57,15 @@ namespace Alias_for_executables.Commands
         static public bool VerifyProgram(string path)
         {
             var program = Path.GetFileName(path);
-            if (Path.GetExtension(path) != ".exe") return false;
-            if (string.IsNullOrEmpty(Path.GetFileNameWithoutExtension(path))) return false;
-            if (!File.Exists(path)) return false;
+
+            if (!File.Exists(path)) 
+                return false;
+
+            if (Path.GetExtension(path) != ".exe") 
+                return false;
+
+            if (string.IsNullOrEmpty(Path.GetFileNameWithoutExtension(path))) 
+                return false;
 
             //maybe add more checks later?
 

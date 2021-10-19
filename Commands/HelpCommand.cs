@@ -31,9 +31,6 @@ namespace Alias_for_executables.Commands
 
         public override CommandResponse TryExecute(string[] arguments)
         {
-            if (arguments.Length > 1) {
-                return new CommandResponse(CommandOutput.Too_Many_Arguments);
-            }
             return OnExecute(arguments);
         }
 
@@ -46,7 +43,7 @@ namespace Alias_for_executables.Commands
                     return new CommandResponse(CommandOutput.Incorrect_Argument, $"Unknown command {cmdName}");
                 }
                 if (!cmd.Help.Avaliable) {
-                    return new CommandResponse(CommandOutput.Fail, "No help avaliable for " + cmdName);
+                    return new CommandResponse(CommandOutput.Fail, $"No help avaliable for {cmdName}");
                 }
 
                 Console.WriteLine($"\n{Globals.ProgramPrefix} {cmd.Label} {cmd.Help.Arguments} \t - {cmd.Help.Discription}");
@@ -54,14 +51,14 @@ namespace Alias_for_executables.Commands
                     Console.WriteLine("\nExample:");
                     Console.WriteLine(cmd.Help.Example);
                 }
+                return new CommandResponse(CommandOutput.Success);
             }
-            else {
-                Console.WriteLine("List of avaliable commands: \n");
-                CMDParser.CommandsList.ForEach(cmd => {
-                    if (cmd.Help.Avaliable) {
-                        Console.WriteLine($"{Globals.ProgramPrefix} {cmd.Label.PadRight(OutputSpacing.maxLabel)} {cmd.Help.Arguments.PadRight(OutputSpacing.maxArgument + 1)} - {cmd.Help.Discription}");
-                    }
-                });
+
+            Console.WriteLine("List of avaliable commands: \n");
+            foreach (var cmd in CMDParser.CommandsList) {
+                if (!cmd.Help.Avaliable)
+                    continue;
+                Console.WriteLine($"{Globals.ProgramPrefix} {cmd.Label.PadRight(OutputSpacing.maxLabel)} {cmd.Help.Arguments.PadRight(OutputSpacing.maxArgument + 1)} - {cmd.Help.Discription}");
             }
             return new CommandResponse(CommandOutput.Success);
         }

@@ -8,7 +8,7 @@ namespace Alias_for_executables.Commands
         public InfoCommand(CommandParser parser) : base(parser, "info", new List<string>() { "version", "-v", "-info", "-version" })
         {
             Help = new HelpOutput() {
-                Discription = "Show general info about the program"
+                Discription = "Show general information about the program."
             };
         }
 
@@ -19,8 +19,8 @@ namespace Alias_for_executables.Commands
 
         public override CommandResponse OnExecute(string[] arguments)
         {
-            Console.WriteLine($"\t----\t Alias for PATH executables ({Globals.ProgramPrefix}) \t---- ");
-            Console.WriteLine("\t\t Version: " + Globals.ProgramVersion);
+            Console.WriteLine($"Alias for PATH executables ({Globals.ProgramPrefix})");
+            Console.WriteLine($"Version: {Globals.ProgramVersion}");
             return new CommandResponse(CommandOutput.Success);
         }
     }

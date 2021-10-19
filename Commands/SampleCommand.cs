@@ -10,8 +10,7 @@ namespace Alias_for_executables.Commands
             Help = new HelpOutput() {
                 Discription = "This is a sample command.",
                 Arguments = "<none> [?none]",
-                Example = $"{Globals.ProgramPrefix} sample none",
-                Shown = false
+                Example = $"{Globals.ProgramPrefix} sample none"
             };
         }
 

@@ -12,16 +12,7 @@ namespace Alias_for_executables
         public string Path { get; set; }
         public DateTime? CreationDate { get; set; }
 
-        public string FileDirectory
-        {
-            get
-            {
-                var dirname = System.IO.Path.GetDirectoryName(Path);
-                //GetDirectoryName doesn't return '\' in the end, but if the directory is 'c:', it does
-                if (!dirname.EndsWith("\\")) dirname += "\\";
-                return dirname;
-            }
-        }
+        public string FileDirectory => System.IO.Path.GetDirectoryName(Path);
 
         public Shortcut() { }
         public Shortcut(string name, string path) => (ShortName, Path) = (name, path);
@@ -56,7 +47,7 @@ namespace Alias_for_executables
                 var reg = Registry.LocalMachine.OpenSubKey($"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\", true);
 
                 if (!reg.GetSubKeyNames().Contains($"{ShortName}.exe")) {
-                    Debug.WriteLine($"Tried removing shortcut \"{ShortName}\" from the registery, but it was absent.");
+                    Debug.WriteLine($"Shortcut \"{ShortName}\" was not found in registry");
                     return true;
                 }
 

@@ -36,31 +36,29 @@ namespace Alias_for_executables
             return CommandsList.Find(cmd => cmd.IsMatch(command));
         }
 
-        public void ExecuteCommand(string command, string[] arguments)
-        {
-            var foundCommand = FindCommand(command);
-            if (foundCommand == null) {
-                Console.WriteLine("Command wasn't found or something");
-                return;
-            }
-            var error = foundCommand.TryExecute(arguments);
-            if (!string.IsNullOrWhiteSpace(error.ToString())) {
-                Console.WriteLine(error);
-            }
-        }
-
         public void ParseCommand(string[] args)
         {
             if (args.Length == 0) {
                 FindCommand("help").OnExecute(args);
                 return;
             }
-            else {
-                var cmd = args[0];
-                args = args.Skip(1).ToArray();
-                ExecuteCommand(cmd, args);
-            }
+            var cmd = args[0];
+            args = args.Skip(1).ToArray();
+            ExecuteCommand(cmd, args);
         }
 
+        public void ExecuteCommand(string command, string[] arguments)
+        {
+            var foundCommand = FindCommand(command);
+            if (foundCommand == null) {
+                Console.WriteLine($"Unknown command. Use \"{Globals.ProgramPrefix} help\" to see avaliable commands");
+                return;
+            }
+
+            var error = foundCommand.TryExecute(arguments);
+            if (!string.IsNullOrWhiteSpace(error.ToString())) {
+                Console.WriteLine(error);
+            }
+        }
     }
 }
