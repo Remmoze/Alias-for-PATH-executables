@@ -20,7 +20,7 @@ namespace Alias_for_executables
 
                 var cleanKey = key;
                 if (key.EndsWith(".exe"))
-                    cleanKey = key.Substring(0, key.Length - key.IndexOf(".exe") + 1);
+                    cleanKey = key.Substring(0, key.IndexOf(".exe"));
 
                 var date = regAlias.GetValue("CreationDate");
 
